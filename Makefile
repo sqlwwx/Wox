@@ -1,5 +1,7 @@
 .PHONY: build clean host _bundle_mac_app plugins help dev test test-all test-calculator test-converter test-plugin test-time test-network test-quick test-legacy only_test check_deps release appimage
 
+SIGN_IDENTITY ?= Developer ID Application: jiajuan mao (AGYCFD2ZGN)
+
 # Determine the current platform
 ifeq ($(OS),Windows_NT)
     PLATFORM := windows
@@ -160,9 +162,9 @@ _bundle_mac_app:
 	cp ../assets/mac/app.icns $(APP_NAME).app/Contents/Resources/app.icns
 	mv $(APP_NAME).app Wox.app
 	security unlock-keychain -p $(KEYCHAINPWD) login.keychain
-	codesign --options=runtime --force --deep --sign "Developer ID Application: jiajuan mao (AGYCFD2ZGN)" Wox.app/Contents/MacOS/wox
+	codesign --options=runtime --force --deep --sign "$(SIGN_IDENTITY)" Wox.app/Contents/MacOS/wox
 	create-dmg \
-		--codesign "Developer ID Application: jiajuan mao (AGYCFD2ZGN)" \
+		--codesign "$(SIGN_IDENTITY)" \
 		--notarize "wox" \
 		--volname "Wox Installer" \
 		--volicon "../assets/mac/app.icns" \
