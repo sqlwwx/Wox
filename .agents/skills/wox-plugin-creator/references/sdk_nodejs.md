@@ -113,6 +113,7 @@ The `ctx` object is required for all API calls.
 - `Notify(ctx, message)`: Display a system notification.
 - `Log(ctx, level, msg)`: Write to plugin logs. Levels: `"Info"`, `"Error"`, `"Debug"`, `"Warning"`.
 - `Copy(ctx, params: CopyParams)`: Copy text or image to clipboard.
+- `Paste(ctx, params: PasteParams)`: Write text or image to the clipboard and simulate a paste keystroke into the active window. Requires Wox >= 2.4.6. Useful for password managers, text expanders, and any plugin that needs to deliver content into another app without the user pressing Ctrl+V.
 - `IsVisible(ctx)`: Check if Wox window is visible.
 
 ### Cache

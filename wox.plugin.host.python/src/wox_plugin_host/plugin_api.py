@@ -14,6 +14,8 @@ from wox_plugin import (
     LogLevel,
     MetadataCommand,
     MRUData,
+    PasteParams,
+    PasteResult,
     PluginSettingDefinitionItem,
     PublicAPI,
     Query,
@@ -478,6 +480,19 @@ class PluginAPI(PublicAPI):
                 "woxImage": (json.dumps(params.wox_image) if params.wox_image else ""),
             },
         )
+
+    async def paste(self, ctx: Context, params: PasteParams) -> PasteResult:
+        """Paste text or image to the active window."""
+        response = await self.invoke_method(
+            ctx,
+            "Paste",
+            {
+                "option": params.to_json(),
+            },
+        )
+        if not isinstance(response, dict):
+            return PasteResult(success=False, err_msg="invalid paste response")
+        return PasteResult.from_dict(response)
 
     async def screenshot(self, ctx: Context, option: ScreenshotOption) -> ScreenshotResult:
         """Start the built-in screenshot workflow."""

@@ -2,6 +2,8 @@ import {
   ChangeQueryParam,
   Context,
   CopyParams,
+  PasteParams,
+  PasteResult,
   MapString,
   PublicAPI,
   PushAttentionRequest,
@@ -429,6 +431,21 @@ export class PluginAPI implements PublicAPI {
       text: params.text,
       woxImage: params.woxImage ? JSON.stringify(params.woxImage) : ""
     })
+  }
+
+  async Paste(ctx: Context, params: PasteParams): Promise<PasteResult> {
+    // Keep the paste option as one JSON payload so the host/core boundary can
+    // add fields later without changing the websocket method's parameter list.
+    const option: { [key: string]: unknown } = {
+      Type: params.type,
+      Text: params.text
+    }
+    if (params.woxImage) {
+      option.WoxImage = params.woxImage
+    }
+    return (await this.invokeMethod(ctx, "Paste", {
+      option: JSON.stringify(option)
+    })) as PasteResult
   }
 
   async Screenshot(ctx: Context, option: ScreenshotOption): Promise<ScreenshotResult> {

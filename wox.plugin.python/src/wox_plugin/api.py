@@ -14,7 +14,15 @@ from .models.attention import PushAttentionRequest
 from .models.context import Context
 from .models.log import LogLevel
 from .models.mru import MRUData
-from .models.query import ChangeQueryParam, CopyParams, MetadataCommand, Query, RefreshQueryParam
+from .models.query import (
+    ChangeQueryParam,
+    CopyParams,
+    MetadataCommand,
+    PasteParams,
+    PasteResult,
+    Query,
+    RefreshQueryParam,
+)
 from .models.result import Result, UpdatableResult  # noqa: F401
 from .models.setting import PluginSettingDefinitionItem
 from .models.toolbar_msg import ToolbarMsg
@@ -834,6 +842,29 @@ class PublicAPI(Protocol):
                 type=CopyType.IMAGE,
                 wox_image=WoxImage.new_absolute("/path/to/image.png").to_dict()
             ))
+        """
+        ...
+
+    async def paste(self, ctx: Context, params: PasteParams) -> PasteResult:
+        """
+        Paste text or image to the active window.
+
+        The content is first written to the clipboard, then a paste keystroke
+        is simulated into the active window.
+        Requires Wox >= 2.4.6.
+
+        Args:
+            ctx: Context
+            params: PasteParams with content type and data
+
+        Example:
+            # Paste text to the active window
+            result = await api.paste(ctx, PasteParams(
+                type=CopyType.TEXT,
+                text="Hello, World!"
+            ))
+            if not result.success:
+                print(result.err_msg)
         """
         ...
 

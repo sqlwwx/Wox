@@ -83,6 +83,7 @@ All methods are async and require `ctx`.
 - `notify(ctx, message)`: Show notification.
 - `log(ctx, level, msg)`: Write log. Levels: `"Info"`, `"Error"`.
 - `copy(ctx, params: CopyParams)`: Copy text/image.
+- `paste(ctx, params: PasteParams)`: Write text/image to the clipboard and simulate a paste keystroke into the active window. Requires Wox >= 2.4.6. Useful for password managers, text expanders, and any plugin that needs to deliver content into another app without the user pressing Ctrl+V.
 - `is_visible(ctx)`: Check visibility.
 
 ### Cache

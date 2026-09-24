@@ -11,6 +11,7 @@ import (
 	"wox/setting/definition"
 	"wox/util"
 	"wox/util/clipboard"
+	"wox/util/keyboard"
 
 	"github.com/samber/lo"
 )
@@ -276,6 +277,11 @@ type API interface {
 	// Use it for HTML/webview previews so plugin surfaces follow light and dark themes.
 	// Requires Wox >= 2.4.5.
 	GetThemeColors(ctx context.Context, option GetThemeColorsOption) GetThemeColorsResult
+
+	// Paste writes the given content to the system clipboard and simulates a
+	// paste keystroke so the content lands in the active application.
+	// Requires Wox >= 2.4.6.
+	Paste(ctx context.Context, option PasteOption) PasteResult
 }
 
 type CopyParams struct {
@@ -306,6 +312,26 @@ type ScreenshotResult struct {
 // GetThemeColorsOption is reserved so later filters can be added without a new API.
 // Requires Wox >= 2.4.5.
 type GetThemeColorsOption struct{}
+
+// PasteOption describes the content to paste. The paste keystroke targets the
+// user's currently focused window on any platform, so plugin authors should
+// treat the destination as whatever app the user is in when calling.
+// Requires Wox >= 2.4.6.
+type PasteOption struct {
+	// Type of content to place on the clipboard before pasting: "text" or "image".
+	Type CopyType
+	// Text content. Used when Type is "text".
+	Text string
+	// Image data. Used when Type is "image".
+	WoxImage *common.WoxImage
+}
+
+// PasteResult reports the paste outcome.
+// Requires Wox >= 2.4.6.
+type PasteResult struct {
+	Success bool
+	ErrMsg  string
+}
 
 // GetThemeColorsResult is the opaque launcher palette for plugin-authored HTML.
 // Requires Wox >= 2.4.5.
@@ -1249,6 +1275,58 @@ func themeColorsResult(colors common.ThemePluginColors) GetThemeColorsResult {
 		Selection:     colors.Selection,
 		Dark:          colors.Dark,
 	}
+}
+
+// Paste writes the content to the clipboard and simulates a paste keystroke
+// into the active window. It mirrors system.pasteToActiveWindow but lives
+// here because plugin cannot import plugin/system (import cycle), as
+// dictation already inlines this logic for the same reason. Clipboard write
+// errors are checked before simulating the keystroke: pasting stale clipboard
+// content into the focused window would be worse than reporting a failure.
+func (a *APIImpl) Paste(ctx context.Context, option PasteOption) PasteResult {
+	if option.Type == CopyTypePlainText {
+		if option.Text == "" {
+			return PasteResult{Success: false, ErrMsg: "paste text is empty"}
+		}
+		if err := clipboard.WriteText(option.Text); err != nil {
+			a.Log(ctx, LogLevelError, fmt.Sprintf("failed to write paste text to clipboard: %s", err.Error()))
+			return PasteResult{Success: false, ErrMsg: fmt.Sprintf("failed to write text to clipboard: %s", err.Error())}
+		}
+	} else if option.Type == CopyTypeImage {
+		if option.WoxImage == nil {
+			return PasteResult{Success: false, ErrMsg: "paste image is empty"}
+		}
+		if option.WoxImage.IsAnimatedGif() {
+			gifPath, cleanup, err := option.WoxImage.ResolveAnimatedGIFPath(ctx)
+			if err != nil {
+				return PasteResult{Success: false, ErrMsg: fmt.Sprintf("failed to resolve animated gif for paste: %s", err.Error())}
+			}
+			defer cleanup()
+			if err := clipboard.WriteAnimatedGIF(gifPath); err != nil {
+				a.Log(ctx, LogLevelError, fmt.Sprintf("failed to write animated gif to clipboard: %s", err.Error()))
+				return PasteResult{Success: false, ErrMsg: fmt.Sprintf("failed to write animated gif to clipboard: %s", err.Error())}
+			}
+		} else {
+			img, err := option.WoxImage.ToImage()
+			if err != nil {
+				return PasteResult{Success: false, ErrMsg: fmt.Sprintf("failed to convert woximage to image: %s", err.Error())}
+			}
+			if err := clipboard.Write(&clipboard.ImageData{Image: img}); err != nil {
+				a.Log(ctx, LogLevelError, fmt.Sprintf("failed to write paste image to clipboard: %s", err.Error()))
+				return PasteResult{Success: false, ErrMsg: fmt.Sprintf("failed to write image to clipboard: %s", err.Error())}
+			}
+		}
+	} else {
+		return PasteResult{Success: false, ErrMsg: fmt.Sprintf("unknown paste type: %s", option.Type)}
+	}
+
+	time.Sleep(time.Millisecond * 150)
+	if err := keyboard.SimulatePaste(); err != nil {
+		return PasteResult{Success: false, ErrMsg: fmt.Sprintf("simulate paste failed: %s", err.Error())}
+	}
+
+	a.Log(ctx, LogLevelInfo, "paste to active window success")
+	return PasteResult{Success: true}
 }
 
 // GetCacheFolder returns this plugin's cache directory, creating it if needed.

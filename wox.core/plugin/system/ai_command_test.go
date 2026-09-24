@@ -176,6 +176,9 @@ func (a *aiCommandTestAPI) GetCacheFolder(ctx context.Context) string {
 func (a *aiCommandTestAPI) GetThemeColors(ctx context.Context, option plugin.GetThemeColorsOption) plugin.GetThemeColorsResult {
 	return plugin.GetThemeColorsResult{}
 }
+func (a *aiCommandTestAPI) Paste(ctx context.Context, option plugin.PasteOption) plugin.PasteResult {
+	return plugin.PasteResult{}
+}
 
 func aiCommandTestCommand(defaultAction string) map[string]any {
 	command := map[string]any{

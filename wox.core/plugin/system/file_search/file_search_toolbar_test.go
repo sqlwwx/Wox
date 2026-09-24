@@ -104,6 +104,9 @@ func (a fileSearchToolbarTestAPI) GetCacheFolder(ctx context.Context) string { r
 func (a fileSearchToolbarTestAPI) GetThemeColors(ctx context.Context, option plugin.GetThemeColorsOption) plugin.GetThemeColorsResult {
 	return plugin.GetThemeColorsResult{}
 }
+func (a fileSearchToolbarTestAPI) Paste(ctx context.Context, option plugin.PasteOption) plugin.PasteResult {
+	return plugin.PasteResult{}
+}
 
 func TestIncrementalToolbarMessageWaitsForMinimumVisibleDuration(t *testing.T) {
 	plugin := &FileSearchPlugin{api: fileSearchToolbarTestAPI{}}

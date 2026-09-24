@@ -130,7 +130,7 @@ Methods for interacting with Wox:
 - **Callbacks**: `onUnload()`, `onDeepLink()`
 - **Commands**: `registerQueryCommands()`
 - **Plugin Tools**: `RegisterPluginTool()`, `UnregisterPluginTool()`, `ListPluginTools()`, `InvokePluginTool()` (Wox >= 2.4.5)
-- **Clipboard**: `copy()`
+- **Clipboard**: `copy()`, `paste()` (Wox >= 2.4.6)
 - **Cache**: `GetCacheFolder()`
 - **Theme**: `GetThemeColors()` (Wox >= 2.4.5)
 

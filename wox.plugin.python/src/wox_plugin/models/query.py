@@ -854,3 +854,101 @@ class CopyParams:
                 "woxImage": self.wox_image,
             }
         )
+
+
+@dataclass
+class PasteParams:
+    """
+    Parameters for pasting content to the active window.
+
+    Used with `api.paste()` to write content to the clipboard and simulate a
+    paste keystroke into the active window.
+
+    Requires Wox >= 2.4.6.
+
+    Attributes:
+        type: The type of content to paste (TEXT or IMAGE)
+        text: The text content to paste (for TEXT type)
+        wox_image: The WoxImage dict to paste (for IMAGE type)
+
+    Example usage:
+        # Paste text to the active window
+        await api.paste(ctx, PasteParams(
+            type=CopyType.TEXT,
+            text="Hello, World!"
+        ))
+    """
+
+    type: CopyType = field(default=CopyType.TEXT)
+    """
+    The type of content to paste.
+
+    Either TEXT (plain text) or IMAGE (WoxImage).
+    """
+
+    text: str = field(default="")
+    """
+    The text content to paste.
+
+    Contains the text that will be written to the clipboard before pasting.
+    Only used when type is TEXT.
+    """
+
+    wox_image: Optional[dict] = field(default=None)
+    """
+    The WoxImage dictionary to paste.
+
+    Contains a WoxImage serialized to dictionary format.
+    Only used when type is IMAGE.
+    """
+
+    def to_json(self) -> str:
+        """
+        Convert to JSON string with camelCase naming.
+
+        Returns:
+            JSON string representation
+        """
+        option: Dict[str, object] = {
+            "Type": self.type,
+            "Text": self.text,
+        }
+        if self.wox_image is not None:
+            option["WoxImage"] = self.wox_image
+        return json.dumps(option)
+
+
+@dataclass
+class PasteResult:
+    """
+    Result of a paste operation.
+
+    Requires Wox >= 2.4.6.
+
+    Attributes:
+        success: Whether the paste succeeded
+        err_msg: Error message when success is False
+
+    Example usage:
+        result = await api.paste(ctx, PasteParams(type=CopyType.TEXT, text="hello"))
+        if not result.success:
+            print(result.err_msg)
+    """
+
+    success: bool = field(default=False)
+    """
+    Whether the paste succeeded.
+    """
+
+    err_msg: str = field(default="")
+    """
+    The error message when success is False.
+    """
+
+    @classmethod
+    def from_dict(cls, data: Optional[Dict[str, object]] = None) -> "PasteResult":
+        payload = data or {}
+        return cls(
+            success=bool(payload.get("Success", False)),
+            err_msg=str(payload.get("ErrMsg", "") or ""),
+        )

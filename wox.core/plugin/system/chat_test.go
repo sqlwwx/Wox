@@ -140,6 +140,9 @@ func (emptyChatAPI) GetCacheFolder(context.Context) string { return "" }
 func (emptyChatAPI) GetThemeColors(context.Context, plugin.GetThemeColorsOption) plugin.GetThemeColorsResult {
 	return plugin.GetThemeColorsResult{}
 }
+func (emptyChatAPI) Paste(context.Context, plugin.PasteOption) plugin.PasteResult {
+	return plugin.PasteResult{}
+}
 
 func TestAIChatPluginDeclaresSelectionQuery(t *testing.T) {
 	metadata := (&AIChatPlugin{}).GetMetadata()

@@ -1448,6 +1448,48 @@ export interface CopyParams {
   woxImage?: WoxImage
 }
 
+/**
+ * Type of data to paste, same values as CopyType.
+ */
+export type PasteType = CopyType
+
+/**
+ * Parameters for pasting content to the active window.
+ *
+ * The content is first written to the clipboard, then a paste keystroke is
+ * simulated into the active window.
+ *
+ * Requires Wox >= 2.4.6.
+ */
+export interface PasteParams {
+  /**
+   * Type of content to paste.
+   */
+  type: PasteType
+  /**
+   * Text content to paste.
+   *
+   * Used when type is "text".
+   */
+  text: string
+  /**
+   * Image data to paste.
+   *
+   * Used when type is "image".
+   */
+  woxImage?: WoxImage
+}
+
+/**
+ * Result of a paste operation.
+ *
+ * Requires Wox >= 2.4.6.
+ */
+export interface PasteResult {
+  Success: boolean
+  ErrMsg: string
+}
+
 export type AttentionActionType = "change_query" | "open_plugin_settings"
 
 /**
@@ -1788,6 +1830,17 @@ export interface PublicAPI {
    * @param params CopyParams
    */
   Copy: (ctx: Context, params: CopyParams) => Promise<void>
+
+  /**
+   * Paste text or image to the active window.
+   *
+   * Writes the content to the clipboard and simulates a paste keystroke into
+   * the active window. Requires Wox >= 2.4.6.
+   *
+   * @param ctx Context
+   * @param params PasteParams
+   */
+  Paste: (ctx: Context, params: PasteParams) => Promise<PasteResult>
 
   /**
    * Start the built-in screenshot workflow.
