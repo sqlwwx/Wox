@@ -1355,7 +1355,7 @@
     "Id": "b81045ca-d93b-4866-9e90-8e10b10f2df1",
     "Name": "Stremio Search",
     "Author": "NubPlayz",
-    "Version": "1.0.1",
+    "Version": "1.0.2",
     "MinWoxVersion": "2.0.0",
     "Runtime": "python",
     "Description": "Fast local library search & catalog lookup for Stremio",
@@ -1371,7 +1371,7 @@
       "Windows"
     ],
     "DateCreated": "2026-09-16 18:41:00",
-    "DateUpdated": "2026-09-16 18:41:00"
+    "DateUpdated": "2026-09-26 18:09:39"
   },
   {
     "Id": "955c78fd-35f4-470c-975c-474e1dc96d5a",
