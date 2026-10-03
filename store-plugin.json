@@ -512,7 +512,7 @@
     "Id": "8f8d2954-4ef6-4b0f-ba53-a816fe095acc",
     "Name": "Iconify",
     "Author": "Wox-launcher",
-    "Version": "0.1.0",
+    "Version": "0.1.1",
     "MinWoxVersion": "2.0.0",
     "Runtime": "python",
     "Description": "i18n:plugin_description",
@@ -528,7 +528,7 @@
       "Linux"
     ],
     "DateCreated": "2026-03-08 15:56:00",
-    "DateUpdated": "2026-09-23 15:05:32",
+    "DateUpdated": "2026-10-03 18:25:02",
     "I18n": {
       "en_US": {
         "plugin_description": "Search Iconify icons - Home of open source icon sets"
@@ -700,7 +700,7 @@
     "Id": "0057ebd4-1a85-4653-8bfa-d51557c0c7a1",
     "Name": "i18n:plugin_name",
     "Author": "qianlifeng",
-    "Version": "0.0.1",
+    "Version": "0.0.2",
     "MinWoxVersion": "2.0.0",
     "Runtime": "python",
     "Description": "i18n:plugin_description",
@@ -716,7 +716,7 @@
       "Linux"
     ],
     "DateCreated": "2026-04-26 15:15:06",
-    "DateUpdated": "2026-04-26 15:17:37",
+    "DateUpdated": "2026-10-03 18:25:06",
     "I18n": {
       "en_US": {
         "plugin_name": "Unsplash",
@@ -1236,7 +1236,7 @@
     "Id": "35E4296B-89E2-492E-977B-0120ECCB5C95",
     "Name": "i18n:plugin_name",
     "Author": "Wox-Launcher",
-    "Version": "0.1.2",
+    "Version": "0.1.3",
     "MinWoxVersion": "2.4.2",
     "Runtime": "nodejs",
     "Description": "i18n:plugin_description",
@@ -1252,7 +1252,7 @@
       "Linux"
     ],
     "DateCreated": "2026-09-06 18:03:00",
-    "DateUpdated": "2026-09-14 12:08:44",
+    "DateUpdated": "2026-10-03 18:25:12",
     "I18n": {
       "en_US": {
         "plugin_name": "GitHub",
