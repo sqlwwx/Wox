@@ -732,7 +732,7 @@
     "Id": "263fa95c-db99-4dc8-be68-784b5ae421f8",
     "Name": "i18n:plugin_name",
     "Author": "stmluyuer",
-    "Version": "0.1.1",
+    "Version": "0.1.4",
     "MinWoxVersion": "2.0.0",
     "Runtime": "nodejs",
     "Description": "i18n:plugin_description",
@@ -752,7 +752,7 @@
       "Linux"
     ],
     "DateCreated": "2026-04-28 13:05:57",
-    "DateUpdated": "2026-09-24 03:06:45",
+    "DateUpdated": "2026-10-24 07:41:55",
     "I18n": {
       "en_US": {
         "plugin_name": "LuxTranslate",
@@ -1204,7 +1204,7 @@
     "Id": "9d7b4e96-a81d-44a3-a75a-bc828cf5668e",
     "Name": "i18n:plugin_name",
     "Author": "Myraxion",
-    "Version": "1.1.0",
+    "Version": "1.2.0",
     "MinWoxVersion": "2.4.2",
     "Runtime": "python",
     "Description": "i18n:plugin_description",
@@ -1220,7 +1220,7 @@
       "Linux"
     ],
     "DateCreated": "2026-09-05 22:20:00",
-    "DateUpdated": "2026-09-07 17:12:53",
+    "DateUpdated": "2026-10-24 07:42:00",
     "I18n": {
       "en_US": {
         "plugin_name": "Linkding",
